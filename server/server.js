@@ -20,6 +20,10 @@ app.use(express.json())
 app.get('/', (req,res) => {
     res.send("Api Working")
 })
+
+app.get('/hello', (req,res) => {
+    res.send("This is hello Page")
+})
 // app.get("/debug-sentry", function mainHandler(req, res) {
 //   throw new Error("My first Sentry error!");
 // });
