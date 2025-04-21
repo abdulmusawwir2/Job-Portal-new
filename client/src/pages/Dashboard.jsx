@@ -1,8 +1,27 @@
 import React from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
+import { useContext,useEffect} from "react";
+import { AppContext } from "../context/AppContext";
 
 const Dashboard = () => {
+  const { companyData, setCompanyData, setCompanyToken } = useContext(AppContext)
+  
+  // function to logout for company
+  const logout = () => {
+    setCompanyToken(null)
+    localStorage.removeItem('companyToken')
+    setCompanyData(null)
+    navigate('/')
+  }
+
+  // (at start when we open /dashboard page it will open /dashboard/manage-jobs)
+  useEffect(() => {
+    if (companyData) {
+      navigate('/dashboard/manage-jobs')
+    }
+  }, [companyData])
+  
   const navigate = useNavigate();
   return (
     <div className="min-h-screen">
@@ -15,21 +34,26 @@ const Dashboard = () => {
             src={assets.logo}
             alt=""
           />
-          <div className="flex items-center gap-3">
-            <p className="max-sm:hidden">Welcome, GreatStack</p>
+
+          {companyData && (
+            <div className="flex items-center gap-3">
+           
+              <p className="max-sm:hidden">Welcome, {companyData.name}</p>
             <div className="relative group">
               <img
                 className="w-8 border rounded-full"
-                src={assets.company_icon}
+                src={companyData.image}
                 alt=""
               />
               <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12">
                 <ul className="list-none m-0 p-2 bg-white rounded-md border text-sm">
-                  <li className="py-1 px-2 cursor-pointer pr-10">Logout</li>
+                  <li onClick={logout} className="py-1 px-2 cursor-pointer pr-10">Logout</li>
                 </ul>
               </div>
             </div>
           </div>
+           )}
+          
         </div>
       </div>
       <div className="flex items-start">
@@ -71,7 +95,7 @@ const Dashboard = () => {
             </NavLink>
           </ul>
         </div>
-        <div>
+        <div className="flex-1 h-full p-2 sm:p-5 ">
           <Outlet />
         </div>
       </div>

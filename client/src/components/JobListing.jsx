@@ -173,7 +173,7 @@ const JobListing = () => {
             </a>
             {Array.from({ length: Math.ceil(filteredJobs.length / 6) }).map(
               (_, index) => (
-                <a href="#job-list">
+                <a key={index} href="#job-list">
                   <button
                     onClick={() => setCurrentPage(index + 1)}
                     className={`w-10 h-10 flex items-center justify-center border border-gray-300 rounded ${
